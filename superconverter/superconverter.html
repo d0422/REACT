@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SUPER CONVERTER</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+
+    function MinutesToHours() {
+      const [amount, setAmount] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+      const reset = () => {
+        setAmount(0);
+      };
+      const onFlip = () => {
+        reset();
+        setFlipped((current) => !current);
+      };
+      return (
+        <div>
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              value={flipped ? amount * 60 : amount}
+              // input 외부에서도 value를 변경해주기 위해 등록
+              id="minutes"
+              placeholder="minutes"
+              type="number"
+              onChange={onChange}
+              disabled={flipped}
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              value={flipped ? amount : Math.round(amount / 60)}
+              id="hours"
+              placeholder="hours"
+              type="number"
+              disabled={!flipped}
+              onChange={onChange}
+            />
+          </div>
+          <button onClick={reset}>RESET</button>
+          <button onClick={onFlip}>
+            {flipped ? "hours to minutes" : "minutes to hours"}
+          </button>
+        </div>
+      );
+    }
+    function KmToMeters() {
+      const [amount, setAmount] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(false);
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+      const reset = () => {
+        setAmount(0);
+      };
+      const onFlip = () => {
+        reset();
+        setFlipped((current) => !current);
+      };
+      return (
+        <div>
+          <div>
+            <label htmlFor="meter">Meter</label>
+            <input
+              value={flipped ? amount * 1000 : amount}
+              // input 외부에서도 value를 변경해주기 위해 등록
+              id="meters"
+              placeholder="Meters"
+              type="number"
+              onChange={onChange}
+              disabled={flipped}
+            />
+          </div>
+          <div>
+            <label htmlFor="KM">KM</label>
+            <input
+              value={flipped ? amount : Math.round(amount / 1000)}
+              id="KM"
+              placeholder="KM"
+              type="number"
+              disabled={!flipped}
+              onChange={onChange}
+            />
+          </div>
+          <button onClick={reset}>RESET</button>
+          <button onClick={onFlip}>
+            {flipped ? "KM to Meters" : "Meters to KM"}
+          </button>
+        </div>
+      );
+    }
+    function APP() {
+      const [index, setIndex] = React.useState("x");
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+      };
+      return (
+        <div>
+          <h1>SUPER CONVERTER</h1>
+          <select value={index} onChange={onSelect}>
+            <option value="x">Select your unit</option>
+            <option value="0">Minutes & Hours</option>
+            <option value="1">Km & Meters</option>
+          </select>
+          <hr />
+          {index === "0" ? <MinutesToHours /> : null}
+          {index === "1" ? <KmToMeters /> : null}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<APP />, root);
+  </script>
+</html>
