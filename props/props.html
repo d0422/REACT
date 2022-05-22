@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SUPER CONVERTER</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+    function Btn({ text = "default", changeValue }) {
+      // Btn에서 onClick을 함수 인자로 받아 setValue를 실행시킴
+      return (
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+    const MemorizedBtn = React.memo(Btn);
+    function APP() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Change");
+
+      return (
+        <div>
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn />
+        </div>
+      );
+    }
+    ReactDOM.render(<APP />, root);
+  </script>
+</html>

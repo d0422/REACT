@@ -332,3 +332,169 @@ const onFlip = () => {
 ```
 
 hour의 경우, flipped가 True이면 입력값을, False이면 60으로 나눈 값을 출력하고, disabled 를 !flipped로 설정하여 input에 입력할 수 없을때, 값을 출력하도록 했다. miniute는 반대다.
+
+# HTML요소 모듈화하기
+
+같은 양식의 버튼을 여러번 쓰는 경우, 버튼을 함수화 하여 쓸 수 있다.
+
+다만, 그 내용이 다를 수 있다. 이때, rendering 하는 부분에서 인자를 넘겨주어서, 인자에 접근해 내용을 바꿔줄 수 있다.
+
+```jsx
+function Btn(props) {
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {props.text}
+        </button>
+      );
+    }
+function APP() {
+      return (
+        <div>
+          <Btn text="Save Changes" />
+          <Btn text="Continue" />
+        </div>
+      );
+    }
+```
+
+위의 코드에서 보면 APP의 <Btn text=””/>를 통해서 text를 넘겨주고있다.
+
+이를 Btn함수는 props라는 인자로 받게되는데, props라는 인자 내부의 text라는 요소가 생성되어, 넘겨받게 된다. 
+
+따라서 props.text의 형식으로 인자를 받아서 내용을 바꿔줄 수 있다.
+
+또한, props로 받지 않아도, {text}의 형식으로 받을 수 있다.
+
+```jsx
+function Btn({text}) {
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+```
+
+{}안에 여러 인자를 받아서 활용할 수도 있다.
+
+```jsx
+function Btn({ text, big }) {
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: big ? 30 : 16,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+```
+
+그리고, 인자가 없는 경우, 즉 디폴트 값도 줄 수 있다.
+
+```jsx
+function Btn({ text = "default", changeValue }) {
+      // Btn에서 onClick을 함수 인자로 받아 setValue를 실행시킴
+      return (
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+```
+
+이렇게 코딩하면, text인자가 없는 경우 default라는 버튼을 생성하게 된다.
+
+### 함수를 인자로 담아서 보낼 수도 있다.
+
+```jsx
+function APP() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Change");
+
+      return (
+        <div>
+          <Btn text={value} changeValue={changeValue} />
+          <Btn text="Continue" />
+        </div>
+      );
+    }
+```
+
+APP의 상태에 를 changeValue라는 props에 함수형태로 담아서 보낸다. 그러나 이것은 인자에 불과하기 때문에, 함수부분에서 changeVlaue를 받아서 실질적인 이벤트리스너를 달아줘야 한다.
+
+```jsx
+function Btn({ text, changeValue }) {
+      // Btn에서 onClick을 함수 인자로 받아 setValue를 실행시킴
+      return (
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+```
+
+onClick을 통해 이벤트 리스너를 달아준 모습이다.
+
+# REACT MEMO
+
+위의 코드에서 value state에 따라 바뀌는 것은 하나의 버튼 뿐이다.
+
+그러나 state가 변해서 return하는 모든 html요소를 rerender하게 되는데, 이러면 대량의 사이트를 만들 때, 많은 부분이 rerender되면서 렉을 유발할 수도 있을 것이다. 그래서 react.memo()를 통해 부분렌더링을 구현한다.
+
+```jsx
+const MemorizedBtn = React.memo(Btn);
+function APP() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Change");
+
+      return (
+        <div>
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn text="Continue" />
+        </div>
+      );
+    }
+```
+
+이런 식으로 버튼을 렌더링 하면 위의 changeValue가 있는 버튼만 rerendering 되게 된다.
