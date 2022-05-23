@@ -498,3 +498,28 @@ function APP() {
 ```
 
 이런 식으로 버튼을 렌더링 하면 위의 changeValue가 있는 버튼만 rerendering 되게 된다.
+# npm
+
+⇒ React 개발하는데 자동완성이나, 기본적인 폴더 툴을 제공하며, import를 통해 각 js파일을 모듈화시켜서 사용할 수 있게 함
+
+127.0.0.1:3000을 통해 사이트 접속 가능함
+
+npm start로 열기 가능
+
+### CSS등록
+
+name.module.css가 있는 경우 아래와 같이 사용 가능함
+
+```jsx
+import styles from "./App.module.css";
+function App() {
+  return (
+    <div >
+      <h1 className={styles.title}>welcome to react!</h1>
+      <Button text={"Continue!!!!"}/>
+    </div>
+  );
+}
+```
+
+이렇게 하면 css파일 역시 모듈화가 이뤄져서 재사용이 가능해짐!!
