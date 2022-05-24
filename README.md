@@ -523,3 +523,28 @@ function App() {
 ```
 
 이렇게 하면 css파일 역시 모듈화가 이뤄져서 재사용이 가능해짐!!
+# useEffect
+
+STATE가 변화할 때마다 함수가 재실행 된다.
+
+⇒ API에서 정보를 받아오는 경우, 계속 재실행되는 문제가 발생할 수 있다.
+
+따라서 우리는 useEffect(한번 만 실행할 함수, [])의 형태도 그 함수가 최초 한번만 실행되게 설정한다.
+
+```jsx
+useEffect(함수 이름, [해당 변수가 변할때마다 함수 실행]);
+```
+
+⇒ 컴포넌트를 지웠다가(숨기는 것이 아니라 없애버린다) 다시 불러오면, 최초생성된 것으로 판정하기 때문에 최초 실행된다.
+
+useEffect 에 return 값으로 함수를 실행시킬 수 있다.
+
+```jsx
+function Hello(){
+useEffect(() => {
+console.log("created");
+return () => console.log("destroyed");
+}, []);
+return <h1>HI</h1>
+}
+```
