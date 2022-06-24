@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
+@keyframes big{
+    from{
+        margin: 0px;
+    }
+    to{
+        margin: 30px;
+        filter:brightness(60%);
+        transform:scale(1.1);
+    }
+}
+.object{
+    display:flex;
+    position:relative;
+    margin: 30px;
+}
+.object:hover :not(.inner){
+    animation:big 1s forwards;
+}
+img{
+    border-radius: 10px;
+}
+.inner{
+    margin:0px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color: white;
+    font-size:1.5rem;
+}

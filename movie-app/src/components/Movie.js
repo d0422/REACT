@@ -1,15 +1,20 @@
+import "./Movie.css";
 import {Link} from "react-router-dom";
-function Movie({CoverImg,title,summary,genres}){
+import { useEffect, useState } from "react";
+function Movie({id,CoverImg,title,summary,genres,rating}){
+    const [ishover, sethover]=useState(0);
     return (
-        <div>
-        <img src={CoverImg} alt={title}/>
-        <h2><Link to="/movie">{title}</Link></h2>
-        <p>{summary}</p>
-        <ul>
-        {genres.map((g)=>(
-        <li key={g}>{g}</li>
-        ))}
-        </ul>
-    </div>);
+        <div className="object"
+        onMouseOver={()=>sethover(1)}
+        onMouseOut={()=>sethover(0)}>
+        <Link to={`/movie/${id}`}><img src={CoverImg} 
+        alt={title}
+        /></Link>
+        {ishover ? (
+            <div className="inner">{title}<br></br><br></br>Rating :{rating}
+            </div>
+        ):("")}
+    </div>
+    );
 }
 export default Movie;
