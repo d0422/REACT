@@ -4,7 +4,7 @@
         margin: 0px;
     }
     to{
-        margin: 30px;
+        margin:2px;
         filter:brightness(60%);
         transform:scale(1.1);
     }
